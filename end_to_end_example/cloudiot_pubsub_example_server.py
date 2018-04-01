@@ -52,7 +52,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import os
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="service_account.json"
 
-'''
+
 import socket
 from time import ctime
 import RPi.GPIO as GPIO
@@ -147,7 +147,7 @@ def Motor_Stop():
 # #     s.sendall(b'Hello, world')
 # #     data = s.recv(1024)
 # # print('Received', repr(data)
-'''
+
 API_SCOPES = ['https://www.googleapis.com/auth/cloud-platform']
 API_VERSION = 'v1'
 DISCOVERY_API = 'https://cloudiot.googleapis.com/$discovery/rest'
