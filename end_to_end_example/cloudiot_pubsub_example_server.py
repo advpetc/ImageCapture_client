@@ -57,6 +57,7 @@ import socket
 from time import ctime
 import RPi.GPIO as GPIO
 import time
+from smbus import SMBus
 
 print '....WIFIROBOTS START!!!...'
 
@@ -68,15 +69,14 @@ GPIO.setmode(GPIO.BCM)
 
 
 ########电机驱动接口定义#################
-ENA = 13    #//L298使能A
-ENB = 20    #//L298使能B
-IN1 = 19    #//电机接口1
-IN2 = 16    #//电机接口2
-IN3 = 21    #//电机接口3
-IN4 = 26    #//电机接口4
+ENA = 13	#//L298使能A
+ENB = 20	#//L298使能B
+IN1 = 19	#//电机接口1
+IN2 = 16	#//电机接口2
+IN3 = 21	#//电机接口3
+IN4 = 26	#//电机接口4
 
 ########舵机接口定义#################
-
 
 
 #######################################
@@ -85,61 +85,61 @@ IN4 = 26    #//电机接口4
 GPIO.setwarnings(False)
 #########电机初始化为LOW##########
 GPIO.setup(ENA,GPIO.OUT,initial=GPIO.LOW)
-#ENA_pwm=GPIO.PWM(ENA,1000) 
-#ENA_pwm.start(0) 
-#ENA_pwm.ChangeDutyCycle(100)
+ENA_pwm=GPIO.PWM(ENA,1000) 
+ENA_pwm.start(0) 
+ENA_pwm.ChangeDutyCycle(70)
 GPIO.setup(IN1,GPIO.OUT,initial=GPIO.LOW)
 GPIO.setup(IN2,GPIO.OUT,initial=GPIO.LOW)
 GPIO.setup(ENB,GPIO.OUT,initial=GPIO.LOW)
-#ENB_pwm=GPIO.PWM(ENB,1000) 
-#ENB_pwm.start(0) 
-#ENB_pwm.ChangeDutyCycle(100)
+ENB_pwm=GPIO.PWM(ENB,1000) 
+ENB_pwm.start(0) 
+ENB_pwm.ChangeDutyCycle(70)
 GPIO.setup(IN3,GPIO.OUT,initial=GPIO.LOW)
 GPIO.setup(IN4,GPIO.OUT,initial=GPIO.LOW)
 
 def Motor_Forward():
-    print 'motor forward'
-    GPIO.output(ENA,GPIO.HIGH)
-    GPIO.output(ENB,GPIO.HIGH)
-    GPIO.output(IN1,GPIO.HIGH)
-    GPIO.output(IN2,GPIO.LOW)
-    GPIO.output(IN3,GPIO.HIGH)
-    GPIO.output(IN4,GPIO.LOW)
-    
+	print 'motor forward'
+	GPIO.output(ENA,GPIO.HIGH)
+	GPIO.output(ENB,GPIO.HIGH)
+	GPIO.output(IN1,GPIO.HIGH)
+	GPIO.output(IN2,GPIO.LOW)
+	GPIO.output(IN3,GPIO.HIGH)
+	GPIO.output(IN4,GPIO.LOW)
+	
 def Motor_Backward():
-    print 'motor_backward'
-    GPIO.output(ENA,GPIO.HIGH)
-    GPIO.output(ENB,GPIO.HIGH)
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN2,GPIO.HIGH)
-    GPIO.output(IN3,GPIO.LOW)
-    GPIO.output(IN4,GPIO.HIGH)
-    
+	print 'motor_backward'
+	GPIO.output(ENA,GPIO.HIGH)
+	GPIO.output(ENB,GPIO.HIGH)
+	GPIO.output(IN1,GPIO.LOW)
+	GPIO.output(IN2,GPIO.HIGH)
+	GPIO.output(IN3,GPIO.LOW)
+	GPIO.output(IN4,GPIO.HIGH)
+	
 def Motor_TurnLeft():
-    print 'motor_turnleft'
-    GPIO.output(ENA,GPIO.HIGH)
-    GPIO.output(ENB,GPIO.HIGH)
-    GPIO.output(IN1,GPIO.HIGH)
-    GPIO.output(IN2,GPIO.LOW)
-    GPIO.output(IN3,GPIO.LOW)
-    GPIO.output(IN4,GPIO.HIGH)
+	print 'motor_turnleft'
+	GPIO.output(ENA,GPIO.HIGH)
+	GPIO.output(ENB,GPIO.HIGH)
+	GPIO.output(IN1,GPIO.HIGH)
+	GPIO.output(IN2,GPIO.LOW)
+	GPIO.output(IN3,GPIO.LOW)
+	GPIO.output(IN4,GPIO.HIGH)
 def Motor_TurnRight():
-    print 'motor_turnright'
-    GPIO.output(ENA,GPIO.HIGH)
-    GPIO.output(ENB,GPIO.HIGH)
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN2,GPIO.HIGH)
-    GPIO.output(IN3,GPIO.HIGH)
-    GPIO.output(IN4,GPIO.LOW)
+	print 'motor_turnright'
+	GPIO.output(ENA,GPIO.HIGH)
+	GPIO.output(ENB,GPIO.HIGH)
+	GPIO.output(IN1,GPIO.LOW)
+	GPIO.output(IN2,GPIO.HIGH)
+	GPIO.output(IN3,GPIO.HIGH)
+	GPIO.output(IN4,GPIO.LOW)
 def Motor_Stop():
-    print 'motor_stop'
-    GPIO.output(ENA,GPIO.LOW)
-    GPIO.output(ENB,GPIO.LOW)
-    GPIO.output(IN1,GPIO.LOW)
-    GPIO.output(IN2,GPIO.LOW)
-    GPIO.output(IN3,GPIO.LOW)
-    GPIO.output(IN4,GPIO.LOW)
-    
+	print 'motor_stop'
+	GPIO.output(ENA,GPIO.LOW)
+	GPIO.output(ENB,GPIO.LOW)
+	GPIO.output(IN1,GPIO.LOW)
+	GPIO.output(IN2,GPIO.LOW)
+	GPIO.output(IN3,GPIO.LOW)
+	GPIO.output(IN4,GPIO.LOW)
+	
 # HOST = 'daring.cwi.nl'    # The remote host
 # PORT = 2001              # The same port as used by the server
 # # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -184,22 +184,24 @@ class Server(object):
     def _update_device_config(self, project_id, region, registry_id, device_id,
                               data):
         """Push the data to the given device as configuration."""
-        config_data = None
+        # config_data = None
         print('The device ({}) receive a command '
               'of: {}'.format(device_id, data['command']))
+        '''
         if data['command']:
-            data['command'] = 01
+            data['command'] = '00'
         if data['command'] == '00':
             Motor_Stop()
             # config_data = {'command': 'stop'}
         elif data['command'] == '01':
             Motor_Forward()
-        elif data['command'] == 02:
+        elif data['command'] == '02':
             Motor_Backward()
-        elif data['command'] == 03:
+        elif data['command'] == '03':
             Motor_TurnLeft()
-        elif data['command'] == 04:
+        elif data['command'] == '04':
             Motor_TurnRight()
+        '''
         # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         #     s.connect((HOST, PORT))
         #     s.sendall(data['command'])
@@ -219,6 +221,7 @@ class Server(object):
         #     # Temperature is OK, don't need to push a new config.
         #     return
 
+        '''
         config_data_json = json.dumps(config_data)
         body = {
             # The device configuration specifies a version to update, which
@@ -246,7 +249,9 @@ class Server(object):
         # The http call for the device config change is thread-locked so
         # that there aren't competing threads simultaneously using the
         # httplib2 library, which is not thread-safe.
-        self._update_config_mutex.acquire()
+        '''
+        # self._update_config_mutex.acquire()
+        '''
         try:
             request.execute()
         except HttpError as e:
@@ -256,6 +261,8 @@ class Server(object):
             print('Error executing ModifyCloudToDeviceConfig: {}'.format(e))
         finally:
             self._update_config_mutex.release()
+        '''
+        # self._update_config_mutex.release()
 
     def run(self, project_id, pubsub_subscription):
         """The main loop. Consumes messages from the
@@ -271,7 +278,7 @@ class Server(object):
             """Logic executed when a message is received from
             subscribed topic.
             """
-            print message.data
+            print message
             try:
                 data = json.loads(message.data)
             except ValueError as e:
@@ -305,8 +312,10 @@ class Server(object):
 
         # The subscriber is non-blocking, so keep the main thread from
         # exiting to allow it to process messages in the background.
+        
         while True:
-            time.sleep(60)
+            time.sleep(10)
+        
 
 
 def parse_command_line_args():
