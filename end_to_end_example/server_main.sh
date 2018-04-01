@@ -1,0 +1,1 @@
+python cloudiot_pubsub_example_server.py     --project_id=imagecapture-199717     --pubsub_subscription=from_main_server     --service_account_json=service_account.json

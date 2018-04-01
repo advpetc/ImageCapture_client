@@ -151,6 +151,7 @@ class Server(object):
             """Logic executed when a message is received from
             subscribed topic.
             """
+           print message
             try:
                 data = json.loads(message.data)
             except ValueError as e:
