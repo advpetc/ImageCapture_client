@@ -327,7 +327,7 @@ def parse_command_line_args():
         '--service_account_json',
         default=os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"),
         help='Path to service account json file.')
-    print default
+    print os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
 
     return parser.parse_args()
 
