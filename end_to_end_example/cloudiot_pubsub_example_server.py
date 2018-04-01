@@ -1,3 +1,4 @@
+#coding:utf-8
 # Copyright 2017 Google Inc. All rights reserved.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,7 +47,7 @@ from google.cloud import pubsub
 from googleapiclient import discovery
 from googleapiclient.errors import HttpError
 from oauth2client.service_account import ServiceAccountCredentials
-
+'''
 import socket
 from time import ctime
 import RPi.GPIO as GPIO
@@ -70,6 +71,7 @@ IN3 = 21    #//电机接口3
 IN4 = 26    #//电机接口4
 
 ########舵机接口定义#################
+
 
 
 #######################################
@@ -140,7 +142,7 @@ def Motor_Stop():
 # #     s.sendall(b'Hello, world')
 # #     data = s.recv(1024)
 # # print('Received', repr(data)
-
+'''
 API_SCOPES = ['https://www.googleapis.com/auth/cloud-platform']
 API_VERSION = 'v1'
 DISCOVERY_API = 'https://cloudiot.googleapis.com/$discovery/rest'
@@ -182,10 +184,10 @@ class Server(object):
               'of: {}'.format(device_id, data['command']))
         if data['command']:
             data['command'] = 01
-        if data['command'] == 00:
+        if data['command'] == '00':
             Motor_Stop()
             # config_data = {'command': 'stop'}
-        elif data['command'] == 01:
+        elif data['command'] == '01':
             Motor_Forward()
         elif data['command'] == 02:
             Motor_Backward()
