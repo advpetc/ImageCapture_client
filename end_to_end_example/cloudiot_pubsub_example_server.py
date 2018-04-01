@@ -47,6 +47,15 @@ from googleapiclient import discovery
 from googleapiclient.errors import HttpError
 from oauth2client.service_account import ServiceAccountCredentials
 
+import socket
+
+HOST = 'daring.cwi.nl'    # The remote host
+PORT = 2001              # The same port as used by the server
+# with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+#     s.connect((HOST, PORT))
+#     s.sendall(b'Hello, world')
+#     data = s.recv(1024)
+# print('Received', repr(data)
 
 API_SCOPES = ['https://www.googleapis.com/auth/cloud-platform']
 API_VERSION = 'v1'
@@ -85,19 +94,27 @@ class Server(object):
                               data):
         """Push the data to the given device as configuration."""
         config_data = None
-        print('The device ({}) has a temperature '
-              'of: {}'.format(device_id, data['temperature']))
-        if data['temperature'] < 0:
-            # Turn off the fan.
-            config_data = {'fan_on': False}
-            print('Setting fan state for device', device_id, 'to off.')
-        elif data['temperature'] > 10:
-            # Turn on the fan
-            config_data = {'fan_on': True}
-            print('Setting fan state for device', device_id, 'to on.')
-        else:
-            # Temperature is OK, don't need to push a new config.
-            return
+        print('The device ({}) receive a command '
+              'of: {}'.format(device_id, data['command']))
+
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.connect((HOST, PORT))
+            s.sendall(data['command'])
+            # data = s.recv(1024)
+        # print('Received', repr(data)
+        # print('The device ({}) has a temperature '
+        #       'of: {}'.format(device_id, data['temperature']))
+        # if data['temperature'] < 0:
+        #     # Turn off the fan.
+        #     config_data = {'fan_on': False}
+        #     print('Setting fan state for device', device_id, 'to off.')
+        # elif data['temperature'] > 10:
+        #     # Turn on the fan
+        #     config_data = {'fan_on': True}
+        #     print('Setting fan state for device', device_id, 'to on.')
+        # else:
+        #     # Temperature is OK, don't need to push a new config.
+        #     return
 
         config_data_json = json.dumps(config_data)
         body = {

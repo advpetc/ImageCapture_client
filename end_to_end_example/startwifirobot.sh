@@ -1,6 +1,6 @@
 #!/bin/sh
 
-python wifirobots.py &
+sudo python wifirobots.py &
 
 
 
