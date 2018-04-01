@@ -47,6 +47,8 @@ from google.cloud import pubsub
 from googleapiclient import discovery
 from googleapiclient.errors import HttpError
 from oauth2client.service_account import ServiceAccountCredentials
+
+
 '''
 import socket
 from time import ctime
@@ -324,6 +326,7 @@ def parse_command_line_args():
     parser.add_argument(
         '--service_account_json',
         default=os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"),
+        print default
         help='Path to service account json file.')
 
     return parser.parse_args()
