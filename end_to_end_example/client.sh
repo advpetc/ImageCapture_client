@@ -1,0 +1,1 @@
+python cloudiot_pubsub_example_mqtt_device.py     --project_id=imagecapture-199717     --registry_id=lahacks     --device_id=my-raspberrypi     --private_key_file=../rsa_private.pem     --algorithm=RS256
